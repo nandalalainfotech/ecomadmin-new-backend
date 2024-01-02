@@ -140,7 +140,7 @@ customerAddressRouter.put(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const attributeId = req.body.id;
-    console.log("attributeId====>", attributeId);
+  
     const Attributemaster = await CustomAddress.findById({ _id: attributeId });
 
     if (Attributemaster) {
@@ -152,8 +152,7 @@ customerAddressRouter.put(
       const updatecAtt = await Attributemaster.save();
       res.send({ message: "Category Updated", Attmaster: updatecAtt });
     }
-    console.log("updatecAtt====>", updatecAtt);
-    // res.send({ message: "Category Updated", Attmaster: updatecAtt });
+   
   })
 );
 export default customerAddressRouter;

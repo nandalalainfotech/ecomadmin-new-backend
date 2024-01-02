@@ -21,9 +21,7 @@ FeaturesRouter.get(
 FeaturesRouter.put(
   "/:id",
   isAuth,
-  // isSeller,
-  // isAdmin,
-  // isSellerOrAdmin,
+ 
   expressAsyncHandler(async (req, res) => {
     const FeaturesId = req.params.id;
     const Featuresupdate = await Features.findById(FeaturesId);
@@ -40,9 +38,7 @@ FeaturesRouter.put(
 FeaturesRouter.post(
   "/",
   isAuth,
-  // isSeller,
-  // isAdmin,
-  // isSellerOrAdmin,
+  
   expressAsyncHandler(async (req, res) => {
     const feature = new Features({
       featurename: req.body.Featurename,
@@ -68,8 +64,7 @@ FeaturesRouter.delete(
 FeaturesRouter.put(
   "/featureactive/:id",
   isAuth,
-  // isAdmin,
-  // isSeller,
+ 
   expressAsyncHandler(async (req, res) => {
     const attributeId = req.body.checkboxId;
     let updatecAtt = [];
@@ -92,8 +87,7 @@ FeaturesRouter.put(
 FeaturesRouter.put(
   "/featureEnable/:id",
   isAuth,
-  // isAdmin,
-  // isSeller,
+  
   expressAsyncHandler(async (req, res) => {
     const attributeId = req.body.id;
 
@@ -109,7 +103,7 @@ FeaturesRouter.put(
       res.send({ message: "Category Updated", Attmaster: updatecAtt });
     }
 
-    // res.send({ message: "Category Updated", Attmaster: updatecAtt });
+   
   })
 );
 
@@ -123,26 +117,26 @@ FeaturesRouter.delete(
     for (let i = 0; i < req.body.id.length; i++) {
       deleteEmploye = await Features.findById({ _id: req.body.id[i] });
       featurevalue.push(deleteEmploye._id);
-      // console.log("deleteEmploye=======>", deleteEmploye)
+     
     }
 
     for (let i = 0; i < featurevalue.length; i++) {
       let deleteEmploy = await FeaturesValue.find({
         featuretype: featurevalue[i],
       });
-      // console.log("deleteEmploy==========>", deleteEmploy)
+     
       for (let j = 0; j < deleteEmploy.length; j++) {
         let deleteEmploy11 = await FeaturesValue.findById({
           _id: deleteEmploy[j]._id,
         });
         let select = await deleteEmploy11.remove();
-        // console.log(" deleteEmploy11 ========>", deleteEmploy11)
+        
       }
     }
     for (let i = 0; i < req.body.id.length; i++) {
       deleteEmploye = await Features.findById({ _id: req.body.id[i] });
       select1 = await deleteEmploye.remove();
-      // console.log("deleteEmploye=========>", deleteEmploye)
+      
     }
     res.send({ message: "MultipleFeature Deleted", generaldata: select1 });
   })

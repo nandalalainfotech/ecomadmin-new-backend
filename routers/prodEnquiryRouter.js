@@ -95,7 +95,7 @@ productEnquiryRouter.post(
       </div>`,
       };
       transporter.sendMail(mailOptions, function (error, info) {
-        console.log("mailOptions", mailOptions);
+    
         if (error) {
           console.log(error);
         } else {

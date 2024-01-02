@@ -29,8 +29,7 @@ TaxesRouter.post(
 TaxesRouter.delete(
   "/:id",
   isAuth,
-  // isAdmin,
-  // isSeller,
+  
   expressAsyncHandler(async (req, res) => {
     const taxes = await TaxesModel.findById(req.params.id);
     if (taxes) {
@@ -46,7 +45,7 @@ TaxesRouter.put(
   "/updateTaxes/:id",
 
   expressAsyncHandler(async (req, res) => {
-    // console.log(req);
+   
     const Id = req.params.id;
     const taxUpdate = await TaxesModel.findById(Id);
     if (taxUpdate) {
@@ -54,7 +53,7 @@ TaxesRouter.put(
       taxUpdate.Rate = req.body.Rate;
       taxUpdate.checked = req.body.checked;
       const updatedTaxes = await taxUpdate.save();
-      // console.log('updatedAttribute', updatedTaxes);
+    
       res.send({ message: " Updated", taxdetail: updatedTaxes });
     } else {
       res.status(404).send({ message: "Taxes Not Found" });

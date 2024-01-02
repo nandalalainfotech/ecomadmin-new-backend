@@ -93,37 +93,12 @@ uploadRouter.get(
   }),
 );
 
-// uploadRouter.get(
-//   "/showcombimg/:CombinationId",
-//   expressAsyncHandler(async (req, res) => {
-//     const user = await Combinationchild.findOne({ _id: req.params.CombinationId});
-//     // console.log("req", req);
-//     const product = await CatlogProduct.findById({ _id: user.CombinationId });
-//     const images = await Image.find({ _id: product.imageId });
-//     var filename = images[0].filename;
-//     // console.log("req======>>>", filename);
-//     const conn = mongoose.connection;
-//     var gfs = Grid(conn.db, mongoose.mongo);
-//     gfs.collection("uploads");
-//     gfs.files.find({ filename: filename }).toArray((err, files) => {
-//       if (!files || files.length === 0) {
-//         return res.status(404).json({
-//           err: "no files exist",
-//         });
-//       }
-//       var bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-//         bucketName: "uploads",
-//       });
-//       var readstream = bucket.openDownloadStreamByName(filename);
-//       return readstream.pipe(res);
-//     });
-//   })
-// );
+
 
 uploadRouter.get(
   "/showsubimglatest/:filename",
   expressAsyncHandler(async (req, res) => {
-    // console.log("req",req);
+    
     let filename = req.params.filename;
     const conn = mongoose.connection;
     var gfs = Grid(conn.db, mongoose.mongo);
@@ -219,7 +194,7 @@ uploadRouter.post(
   isAuth,
   upload.fields([{ name: "images" }, { name: "image" }]),
   async (req, res) => {
-    console.log("req", req);
+  
     let subImage = [];
     for (let i = 0; i < req.files.images.length; i++) {
       if (
@@ -243,14 +218,9 @@ uploadRouter.post(
       status: req.body.status,
       productId: req.body.productData,
       images: subImage,
-      // encoding : req.body.encoding,
+      
     });
-    // console.log("Image====>>>",primaryImage);
-    // const ProductImage ={
-    //   primaryImage,
-    //   subImage
-    // }
-    // console.log("kumar=====>>>",ProductImage)
+    
     const imageUploaded = await primaryImage.save();
     res.send({ message: "image Uploaded", image: imageUploaded });
   },
@@ -308,13 +278,13 @@ uploadRouter.put(
   isAuth,
   upload.fields([{ name: "newImages" }, { name: "images" }, { name: "image" }]),
   async (req, res) => {
-    console.log("req?.body", req?.body);
+
     let subImage;
     let subImageArray = [];
     let FinalsubImageArray = [];
     let coverFilename = null;
     if (req?.body?.newImages) {
-      console.log("Naresh kumar");
+  
       if (req?.body?.newImages?.length !== 24) {
         for (let i = 0; i < req.body.newImages.length; i++) {
           subImage = await uploadImage.find({ _id: req.body.newImages[i] });
@@ -335,7 +305,7 @@ uploadRouter.put(
         FinalsubImageArray.push(subImageArray[i]);
       }
     }
-    console.log("coverFilename", coverFilename);
+  
     const imageId = req.params.id;
     const product = await CatlogProduct.findById({ _id: imageId });
     const image = await Image.findById(product.imageId);
@@ -413,7 +383,7 @@ uploadRouter.get(
     const user = await Combinationchild.findOne({
       _id: req.params.CombinationId,
     });
-    //  console.log('user',user);
+    
     const product = await CatlogProduct.findById({ _id: user.CombinationId });
     const images = await Image.find({ _id: product.imageId });
     const newImage = images[0].images;

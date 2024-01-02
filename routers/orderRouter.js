@@ -16,7 +16,7 @@ orderRouter.get(
 
   isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
-    // const orders = await Order.find({}).populate('user', 'name');
+    
     const seller = req.query.seller || "";
     const sellerFilter = seller ? { seller } : {};
 
@@ -115,10 +115,7 @@ orderRouter.post(
         orderItems: req.body.orderItems,
         shippingAddress: req.body.shippingAddress,
         paymentMethod: req.body.paymentMethod,
-        // itemsPrice: req.body.itemsPrice,
-        // shippingPrice: req.body.shippingPrice,
-        // taxPrice: req.body.taxPrice,
-        // totalPrice: req.body.totalPrice,
+        
         user: req.user._id,
       });
       const createdOrder = await order.save();
@@ -146,7 +143,7 @@ orderRouter.put(
   "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    // const order = await Order.findById(req.params.id);
+   
     const order = await Order.findById(req.params.id).populate(
       "user",
       "email name"
@@ -161,23 +158,7 @@ orderRouter.put(
         email_address: req.body.email_address,
       };
       const updatedOrder = await order.save();
-      // mailgun()
-      //   .messages()
-      //   .send(
-      //     {
-      //       from: 'Amazona <amazona@mg.yourdomain.com>',
-      //       to: `${order.user.name} <${order.user.email}>`,
-      //       subject: `New order ${order._id}`,
-      //       html: payOrderEmailTemplate(order),
-      //     },
-      //     (error, body) => {
-      //       if (error) {
-      //         console.log(error);
-      //       } else {
-      //         console.log(body);
-      //       }
-      //     }
-      //   );
+      
       res.send({ message: "Order Paid", order: updatedOrder });
     } else {
       res.status(404).send({ message: "Order Not Found" });

@@ -5,7 +5,7 @@ const OptionRouter = express.Router();
 OptionRouter.post(
   "/options",
   expressAsyncHandler(async (req, res) => {
-    // console.log("req", req);
+   
     const OptionDetails = new OptionSaveModel({
       mprodId: req.body.mprodId,
       appearence: req.body.appearence,

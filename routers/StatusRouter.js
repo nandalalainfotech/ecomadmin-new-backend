@@ -5,7 +5,7 @@ const StatusRouter = express.Router();
 StatusRouter.post(
   "/status",
   expressAsyncHandler(async (req, res) => {
-    console.log(req);
+    
     const StatusDetails = new StatusModel({
       Status: req.body.Status,
     });

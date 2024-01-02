@@ -7,7 +7,7 @@ const shippingRouter = express.Router();
 shippingRouter.post(
   "/shipcost",
   expressAsyncHandler(async (req, res) => {
-    // console.log("req", req.body)
+   
 
     let item = []
     let testitem = []
@@ -76,8 +76,7 @@ shippingRouter.put(
   "/updateFreeShip/:id",
 
   expressAsyncHandler(async (req, res) => {
-    // console.log("req--------->>", req.body);
-
+   
     let item = []
     let testitem = []
     for (let i = 0; i < req.body.test.length; i++) {
@@ -99,7 +98,7 @@ shippingRouter.put(
         testitem.push(item[i])
       }
     }
-    // console.log("req", item)
+    
     const Id = req.params.id;
     const freeShipUpdate = await shippingModel.findById(Id);
     if (freeShipUpdate) {

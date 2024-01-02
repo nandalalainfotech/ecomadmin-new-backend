@@ -8,38 +8,9 @@ import pdf from "dynamic-html-pdf";
 import nodemailer from "nodemailer";
 import path from "path";
 import RegisterModel from "../Models/RegisterModel.js";
-// import { dirname } from 'path';
+
 const GatewayRouter = express.Router();
-// const path = require('path');
-// GatewayRouter.post(
-//   "/sendmail/:id",
-//   expressAsyncHandler(async (req, res) => {
-//     // console.log(req);
-//     var transporter = nodemailer.createTransport({
-//       host: "smtp.gmail.com",
-//       port: 465,
-//       secure: true,
-//       service: "gmail",
-//       auth: {
-//         user: process.env.SENDER_EMAIL,
-//         pass: process.env.EMAIL_PASSWORD,
-//       },
-//     });
-//     var mailOptions = {
-//       from: process.env.SENDER_EMAIL,
-//       to: "umamaheswari@nandalalainfotech.com",
-//       subject: "Payment Success",
-//       text: "Your Payment was Successfull",
-//     };
-//     transporter.sendMail(mailOptions, function (error, info) {
-//       if (error) {
-//         console.log(error);
-//       } else {
-//         console.log("Email sent: " + info.response);
-//       }
-//     });
-//   })
-// );
+
 
 GatewayRouter.get(
 	"/get-razorpay-key",
@@ -72,14 +43,14 @@ GatewayRouter.post(
 GatewayRouter.post(
 	"/pay-order",
 	expressAsyncHandler(async (req, res) => {
-		console.log("req----------->", req)
+	
 		let usermail = req.body.email;
 		let username = req.body.CustomerName;
 		let order = req.body.order_id;
 		let date = req.body.Dateandtime.slice(10, 20);
-		console.log("date--------->",date)
+		
 		let time = req.body.Dateandtime.slice(22, 32);
-		console.log("time--------->",time)
+		
 		let cartItems = req.body.cartItems;
 		let Shopping = "Lala E-Commerce";
 		let paymentId = req.body.razorpayPaymentId;
@@ -149,11 +120,11 @@ GatewayRouter.post(
 
 		let totalamount = 0;
 		for (let i = 0; i < cartdetails.length; i++) {
-			console.log("totalamount", cartdetails[i].AmountprodQtyValue)
+		
 			totalamount += cartdetails[i].AmountprodQtyValue
 		}
 
-		console.log("totalamount", totalamount)
+	
 		function toBase64(filePath) {
 			const img = fss.readFileSync(filePath);
 
@@ -161,10 +132,9 @@ GatewayRouter.post(
 		}
 
 		const base64String = toBase64('./image/p11.jpg');
-		// console.log(base64String);
-
+		
 		const withPrefix = 'data:image/jpg;base64,' + base64String;
-		// console.log(withPrefix);
+		
 
 
 		pdfData.push({
@@ -953,7 +923,7 @@ GatewayRouter.post(
 			};
 
 			transporter.sendMail(mailOptions, function (error, info) {
-				// console.log("mailOptions", mailOptions);
+			
 				if (error) {
 					console.log(error);
 				} else {

@@ -4,7 +4,7 @@ import expressAsyncHandler from "express-async-handler";
 import TestModel from "../Models/TestModel.js";
 const TestRouter = express.Router();
 
-// const Order = mongoose.model("Ordertests", OrderSchema);
+
 
 TestRouter.get(
   "/get-razorpay-key",
@@ -16,7 +16,7 @@ TestRouter.get(
 TestRouter.post(
   "/create-order",
   expressAsyncHandler(async (req, res) => {
-    console.log("req------------->>", req);
+   
     try {
       const instance = new Razorpay({
         key_id: process.env.RAZORPAY_KEY_ID,
