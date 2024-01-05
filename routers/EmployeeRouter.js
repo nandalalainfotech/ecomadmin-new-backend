@@ -79,9 +79,11 @@ EmployeeRouter.post(
 EmployeeRouter.put(
   "/updatemplee/:id",
   isAuth,
-  
+  // isSeller,
+  // isAdmin,
+  // isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
-   
+    console.log("req--------->", req);
     const Id = req.params.id;
     const employeeupdate = await EmployeDetails.findById(Id);
     if (employeeupdate) {

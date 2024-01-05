@@ -9,7 +9,7 @@ import { isAuth } from "../utils.js";
 const brandRouter = express.Router();
 
 brandRouter.post("/", isAuth, upload.single("image"), async (req, res) => {
- 
+  // console.log(req.file);
   if (req.file === undefined) {
     const brand = new Brand({
       name: req.body.name,
@@ -94,7 +94,7 @@ brandRouter.get(
 );
 
 brandRouter.put("/:id", isAuth, upload.single("image"), async (req, res) => {
- 
+  // console.log(req);
   if (req.file === undefined) {
     const brandUpdateId = req.params.id;
     const brandUpdate = await Brand.findById(brandUpdateId);

@@ -47,7 +47,8 @@ AttributeValueRouter.post(
       let Attri = await AttributeValue.find({
         attributename: categorys.nameall,
       });
-     
+      // console.log("categorys--------->", Attri)
+      // console.log("Attri", Attri);
       if (Attri.length > 0) {
         const AttriValue = new AttributeValue({
           allId: Attri[0]._id,
@@ -179,9 +180,10 @@ AttributeValueRouter.delete(
 AttributeValueRouter.put(
   "/attvalueactive/:id",
   isAuth,
- 
+  // isAdmin,
+  // isSeller,
   async (req, res) => {
-    
+    // console.log("req", req);
     const attributeId = req.body.checkboxId;
     let updatecAtt = [];
     for (let i = 0; i < attributeId.length; i++) {
@@ -205,9 +207,10 @@ AttributeValueRouter.put(
 AttributeValueRouter.put(
   "/attvalueupdate/:id",
   isAuth,
- 
+  // isAdmin,
+  // isSeller,
   async (req, res) => {
-  
+    // console.log("req", req);
     const attributeId = req.body.id;
 
     const Attributemaster = await AttributeValue.findById({ _id: attributeId });
@@ -222,7 +225,7 @@ AttributeValueRouter.put(
       res.send({ message: "Category Updated", Attmaster: updatecAtt });
     }
 
-   
+    // res.send({ message: "Category Updated", Attmaster: updatecAtt });
   }
 );
 

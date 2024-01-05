@@ -14,7 +14,7 @@ const GeneralRouter = express.Router();
 GeneralRouter.get(
   "/generallist",
   expressAsyncHandler(async (req, res) => {
-    
+    // console.log("req", req);
     const Generaldetails = await GeneralModel.find()
       .sort({ createdAt: -1 })
 
@@ -30,7 +30,7 @@ GeneralRouter.get(
   "/generallallist",
   expressAsyncHandler(async (req, res) => {
     const details = await GeneralModel.find().sort({ createdAt: -1 });
-  
+    // console.log(details);
     if (details) {
       res.send(details);
     } else {
@@ -126,7 +126,7 @@ GeneralRouter.put(
       generalUpdate.filename = req.file.filename;
       generalUpdate.mimetype = req.file.mimetype;
       generalUpdate.path = req.file.path;
-      
+      // console.log(generalUpdate);
       const updatedGeneral = await generalUpdate.save();
       res.send({ message: " Updated", newgeneral: updatedGeneral });
     }
@@ -185,16 +185,17 @@ GeneralRouter.delete(
 );
 
 GeneralRouter.put("/checkboxitem/:id", isAuth, async (req, res) => {
-  
+  // console.log('req', req);
   const generalmasterId = req.body.checkboxId;
   let updategeneralmaster = [];
   for (let j = 0; j < generalmasterId.length; j++) {
-    
+    // console.log('hii');
 
     const summarymaster = await summaryModel.findById({
       _id: generalmasterId[j],
     });
-   
+    // console.log(generalmaster);
+
     if (summarymaster) {
       if (req.body.checkedshow === true) {
         summarymaster.Checked = req.body.checkedshow;
@@ -205,12 +206,12 @@ GeneralRouter.put("/checkboxitem/:id", isAuth, async (req, res) => {
     }
   }
 
-
+  // console.log(updategeneralmaster);
   res.send({ message: "General Updated", generalmaster: updategeneralmaster });
 });
 
 GeneralRouter.put("/updateEnables/:id", isAuth, async (req, res) => {
-
+  // console.log('req', req.body);
   const generalId = req.body.id;
   const generalEnable = await shippingModel.find({ preId: generalId });
   let updatecGeneralEnable;
@@ -236,7 +237,7 @@ GeneralRouter.put("/updateEnables/:id", isAuth, async (req, res) => {
 });
 
 GeneralRouter.put("/updateStatusEnables/:id", isAuth, async (req, res) => {
-
+  // console.log('req', req.body);
   const generalId = req.body.id;
   const generalEnabled = await summaryModel.find({ preId: generalId });
   let updatecGeneralStatusEnable;
@@ -264,7 +265,7 @@ GeneralRouter.put("/updateStatusEnables/:id", isAuth, async (req, res) => {
 GeneralRouter.delete(
   "/deletemultiple",
   expressAsyncHandler(async (req, res) => {
-  
+    // console.log('req', req.body);
     let objects1 = req.body.generalid;
     let objects2 = req.body.shippingid;
     let objects3 = req.body.sizeid;
@@ -290,7 +291,7 @@ GeneralRouter.delete(
       select = await shippingdata.remove();
     }
 
- 
+    // console.log("select", select);
     res.send({ message: "GeneralMultiple data Deleted", generaldata: select });
   })
 );

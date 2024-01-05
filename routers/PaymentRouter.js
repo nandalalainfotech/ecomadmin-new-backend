@@ -45,7 +45,7 @@ PaymentRouter.get(
   "/paylist",
   expressAsyncHandler(async (req, res) => {
     const details = await PaymentModel.find().sort({ createdAt: -1 });
-    
+    // console.log(details);
     if (details) {
       res.send(details);
     } else {
@@ -103,7 +103,7 @@ PaymentRouter.put(
       payUpdate.filename = req.file.filename;
       payUpdate.mimetype = req.file.mimetype;
       payUpdate.path = req.file.path;
-      
+      // console.log(generalUpdate);
       const updatedPayment = await payUpdate.save();
       res.send({ message: " Updated", newPay: updatedPayment });
     }
@@ -126,7 +126,7 @@ PaymentRouter.delete(
 PaymentRouter.put(
   "/activenable/:id",
   expressAsyncHandler(async (req, res) => {
-   
+    console.log(req);
     const Id = req.body.id;
 
     const Attributemaster = await PaymentModel.findById({
@@ -139,7 +139,7 @@ PaymentRouter.put(
         Attributemaster.checked = req.body.active;
       }
       const updatecAtt = await Attributemaster.save();
-    
+      console.log("updatecAtt", updatecAtt);
       res.send({ message: "PayUpdated", Enablemaster: updatecAtt });
     }
   })

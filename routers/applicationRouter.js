@@ -69,7 +69,7 @@ applicationRouter.put(
     "/updateEnable/:id",
     isAuth,
     async (req, res) => {
-        
+        // console.log("req",req);
       const attributeId = req.body.id;
   
       const Attributemaster = await AppSetting.findById({ _id: attributeId });

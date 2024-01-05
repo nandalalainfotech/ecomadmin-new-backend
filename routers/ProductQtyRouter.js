@@ -12,7 +12,7 @@ ProductQtyRouter.post(
       Qty: req.body.Qty,
       minQty: req.body.minQty,
     });
-   
+    console.log("req-------->>>Test", QuentitiesSave);
     const createdQuentities = await QuentitiesSave.save();
     
     res.send({ message: "Quentities Added", category: createdQuentities });
@@ -23,7 +23,7 @@ ProductQtyRouter.put(
   "/updatequantity/:id",
   expressAsyncHandler(async (req, res) => {
     let object1 = req.body.productId;
-    
+    console.log("object1-------->>>Test", object1);
     let select;
     const proddata = await CatlogProduct.findById({ _id: object1[0] });
     proddata.quantity = req.body.Qty;

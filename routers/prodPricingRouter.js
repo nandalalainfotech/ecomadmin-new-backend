@@ -8,7 +8,7 @@ const ProdPricingRouter = express.Router();
 ProdPricingRouter.post(
   '/Pricing',
   expressAsyncHandler(async (req, res) => {
-   
+    console.log("req.body",req.body);
     const id = req.body.priceGroup;
     const TaxesDetailsSave = await TaxesModel.findById({
       _id: id,
@@ -25,14 +25,14 @@ ProdPricingRouter.post(
       });
       const createdPricing = await PricingDetailsSave.save();
       res.send({ message: 'Pricing Added', category: createdPricing });
-      
+      // console.log('req', PricingDetailsSave);
     }
   })
 );
 ProdPricingRouter.get(
   '/getPricing',
   expressAsyncHandler(async (req, res) => {
-    
+    // console.log('reqpricing', req);
 
     const pricingDetails = await prodPricingModel.find();
 
@@ -93,10 +93,10 @@ ProdPricingRouter.put(
     proddata.taxrule = req.body.priceGroup;
     select = await proddata.save();
 
-    
+    // console.log('select--------->>>', select);
 
     const Id = req.body._id;
-    
+    // console.log('Id', Id);
     const prodPriceUpdate = await prodPricingModel.findById(Id);
     if (prodPriceUpdate) {
       prodPriceUpdate.RetailExcl = req.body.RetailExcl;

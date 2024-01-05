@@ -9,7 +9,8 @@ import sgMail from '@sendgrid/mail';
 import otpGenerator from 'otp-generator';
 import EmployeDetails from '../Models/EmployeeDetails.js';
 
-
+// var SENDGRID_API_KEY = '';
+// sgMail.setApiKey(SENDGRID_API_KEY)
 const userRouter = express.Router();
 
 userRouter.get(
@@ -19,7 +20,7 @@ userRouter.get(
             .sort({ 'seller.rating': -1 })
             .limit(3);
         res.send(topSellers);
-       
+        // console.log('topSellers');
     })
 );
 
@@ -42,7 +43,9 @@ userRouter.post(
                     email: user.email,
                     mobile: user.mobile,
                     profile: user.profile,
-                    
+                    // status: user.status,
+                    // isAdmin: user.isAdmin,
+                    // isSeller: user.isSeller,
                     token: generateToken(user),
                 });
                 return;

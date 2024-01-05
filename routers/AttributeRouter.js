@@ -133,14 +133,14 @@ AttributeRouter.delete(
     for (let i = 0; i < req.body.id.length; i++) {
       deleteEmploye = await Attribute.findById({ _id: req.body.id[i] });
       attrivalue.push(deleteEmploye._id);
-      
+      // console.log(deleteEmploye)
     }
 
     for (let i = 0; i < attrivalue.length; i++) {
       let deleteEmploy = await AttributeValue.find({
         attributeVlaue: attrivalue[i],
       });
-     
+      // console.log("attrivalue", deleteEmploy)
       for (let j = 0; j < deleteEmploy.length; j++) {
         let deleteEmploy11 = await AttributeValue.findById({
           _id: deleteEmploy[j]._id,
@@ -151,7 +151,7 @@ AttributeRouter.delete(
     for (let i = 0; i < req.body.id.length; i++) {
       const deleteEmploye = await Attribute.findById({ _id: req.body.id[i] });
       select1 = await deleteEmploye.remove();
-     
+      // console.log(deleteEmploye)
     }
     res.send({ message: "MultipleAttribute Deleted", generaldata: select1 });
   })

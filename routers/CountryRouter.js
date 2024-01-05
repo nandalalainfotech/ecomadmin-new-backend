@@ -58,7 +58,8 @@ CountryRouter.put(
 CountryRouter.delete(
   "/countrymasterdel/:id",
   isAuth,
-  
+  // isAdmin,
+  // isSeller,
   expressAsyncHandler(async (req, res) => {
     const country = await CountryModel.findById(req.params.id);
     if (country) {
@@ -73,7 +74,8 @@ CountryRouter.delete(
 CountryRouter.put(
   "/enable/:id",
   isAuth,
-  
+  // isAdmin,
+  // isSeller,
   async (req, res) => {
     const enableId = req.body.id;
     const countryEnable = await CountryModel.findById(enableId);

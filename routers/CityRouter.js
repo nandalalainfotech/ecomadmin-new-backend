@@ -13,6 +13,8 @@ CityRouter.post(
       country: req.body.country,
       checked: req.body.checked,
       city: req.body.city,
+      // pincodeFrom: req.body.pincodeFrom,
+      // pincodeTo: req.body.pincodeTo,
       pincodes: req.body.pincode,
       stateId: req.body.stateId,
       zoneId: req.body.zoneId,
@@ -49,7 +51,7 @@ CityRouter.put(
       cityUpdate.checked = req.body.checked;
       cityUpdate.city = req.body.city;
       cityUpdate.pincodes = req.body.pincode;
-    
+      // cityUpdate.pincodeTo = req.body.pincodeTo;
       const updatedCity = await cityUpdate.save();
       res.send({ message: " Updated", Citydetail: updatedCity });
     } else {
@@ -85,7 +87,7 @@ CityRouter.put(
       const updatecAtt = await Attributemaster.save();
       res.send({ message: "CityUpdated", Enablemaster: updatecAtt });
     }
-   
+    //   res.send({ message: "Category Updated", Attmaster: updatecAtt });
   })
 );
 CityRouter.put("/checkboxitem/:id", isAuth, async (req, res) => {

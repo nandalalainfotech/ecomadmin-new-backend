@@ -24,25 +24,50 @@ CustomerDetailsRouter.post(
       checked: req.body.checked,
     });
     const createdProfile = await customerdetailData.save();
-   
+    //console.log('createdProfile', createdProfile);
     res.send({ message: "Customer Added", category: createdProfile });
   })
 );
 
+// CustomerDetailsRouter.post(
+//   "/login",
+//   expressAsyncHandler(async (req, res) => {
+//     // console.log(req);
+//     const user = await CustomerDetailsModel.findOne({
+//       emailorphone: req.body.emailorphone,
+//     });
+//     console.log("user", user);
+//     console.log(req.body.password, user.password);
+//     if (user) {
+//       if (bcrypt.compareSync(req.body.password, user.password)) {
+//         console.log(req.body.password, user.password);
+//         res.send({
+//           _id: user._id,
+//           Username: user.emailorphone,
+//           Password: user.password,
+//           token: generateToken(user),
+//         });
+//         return;
+//       }
+//     }
 
+//     res.status(401).send({ message: "Invalid email or password" });
+//   })
+// );
 
 CustomerDetailsRouter.post(
   "/loginn",
   expressAsyncHandler(async (req, res) => {
- 
+    console.log(req);
     const user = await CustomerDetailsModel.findOne({
       emailorphone: req.body.emailorphone,
     });
-
-    
+    console.log("user", user);
+    // console.log(req.body.password, user.password);
+    // localStorage.setItem("userInfo", JSON.stringify(user ? user : ""));
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
-   
+        console.log(req.body.password, user.password);
 
         res.send({
           _id: user._id,
@@ -64,7 +89,7 @@ CustomerDetailsRouter.get(
   "/customerDetail",
   expressAsyncHandler(async (req, res) => {
     const details = await CustomerDetailsModel.find().sort({ createdAt: -1 });
-   
+    //console.log(details);
     if (details) {
       res.send(details);
     } else {
@@ -77,7 +102,7 @@ CustomerDetailsRouter.put(
   "/updateCustomer/:id",
 
   expressAsyncHandler(async (req, res) => {
-    
+    //console.log('req', req);
     const Id = req.params.id;
     const customerUpdate = await CustomerDetailsModel.findById(Id);
     if (customerUpdate) {
@@ -92,7 +117,7 @@ CustomerDetailsRouter.put(
 
       customerUpdate.showOffers = req.body.showOffers;
       const updatedAttribute = await customerUpdate.save();
-     
+      //console.log('updatedAttribute', updatedAttribute);
       res.send({ message: " Updated", attribute: updatedAttribute });
     } else {
       res.status(404).send({ message: "Customer Not Found" });
@@ -104,7 +129,7 @@ CustomerDetailsRouter.delete(
   "/deleteCustomer/:id",
   expressAsyncHandler(async (req, res) => {
     const deleteCustomer = await CustomerDetailsModel.findById(req.params.id);
-    
+    // console.log('');
     if (deleteCustomer) {
       const deleteCustomer1 = await deleteCustomer.remove();
       res.send({ message: "Attributed Deleted", deleteAtt: deleteCustomer1 });
@@ -118,14 +143,14 @@ CustomerDetailsRouter.put(
   "/activeEnable/:id",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    
+    //console.log('req', req.body);
     const Id = req.body.id;
 
     const Attributemaster = await CustomerDetailsModel.findById({
       _id: Id,
     });
 
-    
+    //console.log('req', Attributemaster);
     if (Attributemaster) {
       if (req.body.deactive === false) {
         Attributemaster.checked = req.body.deactive;
@@ -133,16 +158,16 @@ CustomerDetailsRouter.put(
         Attributemaster.checked = req.body.active;
       }
       const updatecAtt = await Attributemaster.save();
-     
+      //console.log('updatecAtt', updatecAtt);
       res.send({ message: "Category Updated", Attmaster: updatecAtt });
     }
 
-   
+    //   res.send({ message: "Category Updated", Attmaster: updatecAtt });
   })
 );
 
 CustomerDetailsRouter.put("/checkboxitem/:id", isAuth, async (req, res) => {
-
+  console.log(req);
   const cusmasterId = req.body.checkboxId;
 
   let updatecusmaster = [];
@@ -166,7 +191,7 @@ CustomerDetailsRouter.put("/checkboxitem/:id", isAuth, async (req, res) => {
 CustomerDetailsRouter.delete(
   "/deletemultiple/:id",
   expressAsyncHandler(async (req, res) => {
-   
+    console.log(req);
     const deletId = req.body.id;
     let deleteCustomer;
     for (let i = 0; i < deletId.length; i++) {
@@ -175,7 +200,7 @@ CustomerDetailsRouter.delete(
       });
       deleteCustomer = await deleteCus.remove();
     }
-   
+    console.log(("deleteCustomer", deleteCustomer));
     res.send({ message: "Attributed Deleted", deleteAtt: deleteCustomer });
   })
 );
@@ -185,7 +210,7 @@ CustomerDetailsRouter.delete(
 CustomerDetailsRouter.put(
   "/resetpassword/:id",
   expressAsyncHandler(async (req, res) => {
-    
+    // console.log(req);
     const Id = req.params.id;
     const customerUpdate = await CustomerDetailsModel.findById(Id);
     if (customerUpdate) {
@@ -200,10 +225,11 @@ CustomerDetailsRouter.put(
           const confirmPassword = bcrypt.hashSync(req.body.conpass, salt);
           customerUpdate.password = newPassword
           customerUpdate.cpassword = confirmPassword
-         
+          //     const updatedPassword = await passwordUpdate.save();
+          //     res.send({ message: " Password Updated", attribute: updatedPassword });
           const updatedAttribute = await customerUpdate.save();
           res.send({ message: " Updated", attribute: updatedAttribute });
-         
+          // console.log("customerUpdate===========>", customerUpdate);
         })
       } else {
         res.status(404).send({ message: "Customer Not Found" });
@@ -217,7 +243,7 @@ CustomerDetailsRouter.post(
   "/forgetpassword",
   expressAsyncHandler(async (req, res) => {
     const email = req.body.email;
-    
+    // console.log("email========>", email)
     const forgetpassword = await CustomerDetailsModel.findOne({
       emailorphone: email,
     });
@@ -226,7 +252,7 @@ CustomerDetailsRouter.post(
       bcrypt.compare(email, forgetpassword.emailorphone, async function (err, isMatch) {
         let otpCode = Math.floor((Math.random() * 10000) + 1);
         let emailorphone = email;
-       
+        // console.log("otpCode========>", otpCode)
         var transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
           port: 465,
@@ -244,7 +270,7 @@ CustomerDetailsRouter.post(
           html: `<div><h1></h1><h2>Email: ${email}</h2><h2>OTP: ${otpCode}</h2></div>`
         };
         transporter.sendMail(mailOptions, function (error, info) {
-         
+          console.log("mailOptions", mailOptions);
           if (error) {
             console.log(error);
           } else {
@@ -264,13 +290,13 @@ CustomerDetailsRouter.post(
 CustomerDetailsRouter.post(
   "/updatepassword",
   expressAsyncHandler(async (req, res) => {
- 
+    console.log("req========>", req)
     const emailorphone = req.body.emailorphone;
-   
+    console.log("email========>", emailorphone)
     const password = req.body.password;
-    
+    console.log("password========>", password)
     const confirmPassword = req.body.password;
-   
+    console.log("confirmPassword========>", confirmPassword)
     const updatepassword = await CustomerDetailsModel.findOne({
       emailorphone: emailorphone,
     });

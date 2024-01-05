@@ -10,14 +10,506 @@ import subCategoryMaster from "../Models/categorysubMasterModel.js";
 import ThirdCategoryMaster from "../Models/categoryThirdModel.js";
 import FourthCategoryMaster from "../Models/categoryFourthModel.js";
 
+// categoryMasterRouter.post(
+//   "/",
+//   isAuth,
+//   upload.single("coverimg"),
+//   async (req, res) => {
+//     console.log("req=================================", req.body);
+//     if (req.body.parent == "undefined") {
+//       const categories = new CategoryMaster({
+//         name: req.body.name,
+//         checked: req.body.checked,
+//         parent: req.body.parent,
+//         description: req.body.description,
+//       });
+//       const CategoryMasteruploaded = await categories.save();
 
+//       res.send({
+//         message: "Category created",
+//         categorymaster: CategoryMasteruploaded,
+//       });
+//     } else {
+//       let categoryParenttest = await CategoryMaster.findById(req.body.parent);
+//       if (categoryParenttest) {
+//         const categories = new CategoryMaster({
+//           name: req.body.name,
+//           checked: req.body.checked,
+//           parent: req.body.parent,
+//           description: req.body.description,
+//         });
+
+//         categoryParenttest.children.push(categories);
+//         const CategoryMasteruploaded = await categoryParenttest.save();
+//       } else {
+//         if (req.body.childname === "child-1") {
+//           const categories = new CategoryMaster({
+//             name: req.body.name,
+//             checked: req.body.checked,
+//             parent: req.body.parent,
+//             parentId: req.body.parentId,
+//             description: req.body.description,
+//           });
+//           let ones = req.body.childIndex;
+//           let item = await CategoryMaster.update(
+//             { _id: req.body.parentId },
+//             {
+//               $push: {
+//                 ["children." + ones + ".children"]: categories,
+//               },
+//             }
+//           );
+//         } else if (req.body.childname === "child-2") {
+//           const categories = new CategoryMaster({
+//             name: req.body.name,
+//             checked: req.body.checked,
+//             parent: req.body.parent,
+//             parentId: req.body.parentId,
+//             description: req.body.description,
+//           });
+//           let child1 = req.body.child1;
+//           let test = req.body.childIndex;
+//           let item = await CategoryMaster.update(
+//             { _id: req.body.parentId },
+//             {
+//               $push: {
+//                 // "children.$[].children.2.children": categories,
+//                 ["children." + child1 + ".children." + test + ".children"]:
+//                   categories,
+//               },
+//             }
+//           );
+//         } else if (req.body.childname === "child-3") {
+//           const categories = new CategoryMaster({
+//             name: req.body.name,
+//             checked: req.body.checked,
+//             parent: req.body.parent,
+//             parentId: req.body.parentId,
+//             description: req.body.description,
+//           });
+//           let child1 = req.body.child1;
+//           let childs2 = req.body.child2;
+//           let childindex = req.body.childIndex;
+//           let item = await CategoryMaster.update(
+//             { _id: req.body.parentId },
+//             {
+//               $push: {
+//                 ["children." +
+//                   child1 +
+//                   ".children." +
+//                   childs2 +
+//                   ".children." +
+//                   childindex +
+//                   ".children"]: categories,
+//               },
+//             }
+//           );
+//         } else if (req.body.childname === "child-4") {
+//           const categories = new CategoryMaster({
+//             name: req.body.name,
+//             checked: req.body.checked,
+//             parent: req.body.parent,
+//             parentId: req.body.parentId,
+//             description: req.body.description,
+//           });
+//           let child1 = req.body.child1;
+//           let childs2 = req.body.child2;
+//           let childs3 = req.body.child3;
+//           let childindex = req.body.childIndex;
+//           let item = await CategoryMaster.update(
+//             { _id: req.body.parentId },
+//             {
+//               $push: {
+//                 ["children." +
+//                   child1 +
+//                   ".children." +
+//                   childs2 +
+//                   ".children." +
+//                   childs3 +
+//                   ".children." +
+//                   childindex +
+//                   ".children"]: categories,
+//               },
+//             }
+//           );
+//         } else if (req.body.childname === "child-5") {
+//           const categories = new CategoryMaster({
+//             name: req.body.name,
+//             checked: req.body.checked,
+//             parent: req.body.parent,
+//             parentId: req.body.parentId,
+//             description: req.body.description,
+//           });
+//           let child1 = req.body.child1;
+//           let childs2 = req.body.child2;
+//           let childs3 = req.body.child3;
+//           let childs4 = req.body.child4;
+//           let childindex = req.body.childIndex;
+//           let item = await CategoryMaster.update(
+//             { _id: req.body.parentId },
+//             {
+//               $push: {
+//                 ["children." +
+//                   child1 +
+//                   ".children." +
+//                   childs2 +
+//                   ".children." +
+//                   childs3 +
+//                   ".children." +
+//                   childs4 +
+//                   ".children." +
+//                   childindex +
+//                   ".children"]: categories,
+//               },
+//             }
+//           );
+//         } else if (req.body.childname === "child-6") {
+//           const categories = new CategoryMaster({
+//             name: req.body.name,
+//             checked: req.body.checked,
+//             parent: req.body.parent,
+//             parentId: req.body.parentId,
+//             description: req.body.description,
+//           });
+//           let child1 = req.body.child1;
+//           let childs2 = req.body.child2;
+//           let childs3 = req.body.child3;
+//           let childs4 = req.body.child4;
+//           let childs5 = req.body.child5;
+//           let childindex = req.body.childIndex;
+//           let item = await CategoryMaster.update(
+//             { _id: req.body.parentId },
+//             {
+//               $push: {
+//                 ["children." +
+//                   child1 +
+//                   ".children." +
+//                   childs2 +
+//                   ".children." +
+//                   childs3 +
+//                   ".children." +
+//                   childs4 +
+//                   ".children." +
+//                   childs5 +
+//                   ".children." +
+//                   childindex +
+//                   ".children"]: categories,
+//               },
+//             }
+//           );
+//         } else if (req.body.childname === "child-7") {
+//           const categories = new CategoryMaster({
+//             name: req.body.name,
+//             checked: req.body.checked,
+//             parent: req.body.parent,
+//             parentId: req.body.parentId,
+//             description: req.body.description,
+//           });
+//           let child1 = req.body.child1;
+//           let childs2 = req.body.child2;
+//           let childs3 = req.body.child3;
+//           let childs4 = req.body.child4;
+//           let childs5 = req.body.child5;
+//           let childs6 = req.body.child6;
+//           let childindex = req.body.childIndex;
+
+//           let item = await CategoryMaster.update(
+//             { _id: req.body.parentId },
+//             {
+//               $push: {
+//                 ["children." +
+//                   child1 +
+//                   ".children." +
+//                   childs2 +
+//                   ".children." +
+//                   childs3 +
+//                   ".children." +
+//                   childs4 +
+//                   ".children." +
+//                   childs5 +
+//                   ".children." +
+//                   childs6 +
+//                   ".children." +
+//                   childindex +
+//                   ".children"]: categories,
+//               },
+//             }
+//           );
+//         } else if (req.body.childname === "child-8") {
+//           const categories = new CategoryMaster({
+//             name: req.body.name,
+//             checked: req.body.checked,
+//             parent: req.body.parent,
+//             parentId: req.body.parentId,
+//             description: req.body.description,
+//           });
+//           let child1 = req.body.child1;
+//           let childs2 = req.body.child2;
+//           let childs3 = req.body.child3;
+//           let childs4 = req.body.child4;
+//           let childs5 = req.body.child5;
+//           let childs6 = req.body.child6;
+//           let childs7 = req.body.child7;
+//           let childindex = req.body.childIndex;
+//           let item = await CategoryMaster.update(
+//             { _id: req.body.parentId },
+//             {
+//               $push: {
+//                 ["children." +
+//                   child1 +
+//                   ".children." +
+//                   childs2 +
+//                   ".children." +
+//                   childs3 +
+//                   ".children." +
+//                   childs4 +
+//                   ".children." +
+//                   childs5 +
+//                   ".children." +
+//                   childs6 +
+//                   ".children." +
+//                   childs7 +
+//                   ".children." +
+//                   childindex +
+//                   ".children"]: categories,
+//               },
+//             }
+//           );
+//         }
+//   if(parentId && "chid1"){
+//     const categories = new CategoryMaster({
+//       name: req.body.name,
+//       checked: req.body.checked,
+//       parent: req.body.parent,
+//       description: req.body.description,
+//     });
+//     let item = await   CategoryMaster.update({_id: "64ad482afee1acf22289af55", }, {
+//       '$push': {
+//          "children": categories
+//       }
+//     });
+//   }
+
+//   let item = await   CategoryMaster.update({_id: "64ad482afee1acf22289af55", }, {
+//     '$push': {
+//        "children.$[].children.$[].children.$[].children.$[].children": categories
+//     }
+//   });
+//   }
+// }
+
+// // var descendants = [];
+// // var stack = [];
+// let item = await CategoryMaster.update(
+//   {
+//     _id: "6437c972011fdc5ad767775b",
+//     "children._id": "6437c972011fdc5ad767775b",
+//   },
+//   {
+//     $push: {
+//       "children.$.children": { name: "test item name" },
+//     },
+//   }
+// );
+
+// console.log("item---------->>", item);
+// stack.push(item);
+// while (stack.length > 0) {
+//   var currentnode = stack.pop();
+//   var children = db.users.find({ userparentid: currentnode.username });
+//   while (true === children.hasNext()) {
+//     var child = children.next();
+//     descendants.push(child.username);
+//     stack.push(child);
+//   }
+// }
+// descendants.join(",");
+// const CategoryMasteruploaded = await categories.save();
+// console.log(req);
+// let categoryParent;
+// if (req.body.parent != "home" && req.body.parent != "undefined") {
+//   categoryParent = await CategoryMaster.findById(req.body.parent);
+//   if (categoryParent) {
+//     if (req.file === undefined) {
+//       const subcategory = new subCategoryMaster({
+//         name: req.body.name,
+//         checked: req.body.checked,
+//         parent: req.body.parent,
+//         description: req.body.description,
+//       });
+//       const updatedsubcategory = await subcategory.save();
+//       categoryParent.children.push(updatedsubcategory);
+//       const updatedCategory = await categoryParent.save();
+//       res.status(201).send({
+//         message: "Category Added",
+//         categorymaster: updatedCategory,
+//       });
+//     } else {
+//       const subcategory = new subCategoryMaster({
+//         name: req.body.name,
+//         checked: req.body.checked,
+//         parent: req.body.parent,
+//         description: req.body.description,
+//         coverimg: req.file.filename,
+//       });
+//       const updatedsubcategory = await subcategory.save();
+//       categoryParent.children.push(updatedsubcategory);
+//       const updatedCategory = await categoryParent.save();
+//       res.status(201).send({
+//         message: "Category Added",
+//         categorymaster: updatedCategory,
+//       });
+//     }
+//   } else {
+//     const categoryChild = await subCategoryMaster.findById(req.body.parent);
+//     if (categoryChild) {
+//       if (req.file === undefined) {
+//         const categoryParent = await CategoryMaster.findById({
+//           _id: categoryChild.parent,
+//         });
+//         const thirdcategory = new ThirdCategoryMaster({
+//           name: req.body.name,
+//           checked: req.body.checked,
+//           parent: req.body.parent,
+//           description: req.body.description,
+//         });
+
+//         let garanChildUpdate = CategoryMaster.updateOne(
+//           {
+//             _id: categoryChild.parent,
+//             "children._id": categoryChild._id,
+//           },
+//           {
+//             $push: { "children.$.children": thirdcategory },
+//           },
+//           { new: true }
+//         );
+
+//         await garanChildUpdate;
+//         const CategoryGrandChild = await thirdcategory.save();
+//         categoryChild.children.push(CategoryGrandChild);
+//         const updatedCategory = await categoryChild.save();
+//         res.status(201).send({
+//           message: "Category Added",
+//           categorymaster: updatedCategory,
+//         });
+//       } else {
+//         const categoryParent = await CategoryMaster.findById({
+//           _id: categoryChild.parent,
+//         });
+//         const thirdcategory = new ThirdCategoryMaster({
+//           name: req.body.name,
+//           checked: req.body.checked,
+//           parent: req.body.parent,
+//           description: req.body.description,
+//           coverimg: req.file.filename,
+//         });
+
+//         let garanChildUpdate = CategoryMaster.updateOne(
+//           {
+//             _id: categoryChild.parent,
+//             "children._id": categoryChild._id,
+//           },
+//           {
+//             $push: { "children.$.children": thirdcategory },
+//           },
+//           { new: true }
+//         );
+
+//         await garanChildUpdate;
+//         const CategoryGrandChild = await thirdcategory.save();
+//         categoryChild.children.push(CategoryGrandChild);
+//         const updatedCategory = await categoryChild.save();
+//         res.status(201).send({
+//           message: "Category Added",
+//           categorymaster: updatedCategory,
+//         });
+//       }
+//     } else {
+//       const categorygrandChild = await ThirdCategoryMaster.findById(
+//         req.body.parent
+//       );
+//       const categoryChild = await subCategoryMaster.findById({
+//         _id: categorygrandChild.parent,
+//       });
+//       const categoryParent = await CategoryMaster.findById({
+//         _id: categoryChild.parent,
+//       });
+//       if (categorygrandChild) {
+//         const fourthcategory = new FourthCategoryMaster({
+//           name: req.body.name,
+//           checked: req.body.checked,
+//           parent: req.body.parent,
+//           description: req.body.description,
+//           coverimg: req.file.filename,
+//         });
+
+//         let userChatGroupUpdate = CategoryMaster.updateOne(
+//           {
+//             _id: categoryChild.parent,
+//             "children._id": categorygrandChild.parent,
+//             "children._id": categorygrandChild._id,
+//           },
+//           {
+//             $push: { "children.$[].children": fourthcategory },
+//           },
+//           { new: true }
+//         );
+//         await userChatGroupUpdate;
+//       }
+//     }
+//   }
+// } else {
+//   if (req.file === undefined) {
+//     const categories = new CategoryMaster({
+//       name: req.body.name,
+//       checked: req.body.checked,
+//       parent: req.body.parent,
+//       description: req.body.description,
+//     });
+//     const CategoryMasteruploaded = await categories.save();
+
+//     res.send({
+//       message: "Category created",
+//       categorymaster: CategoryMasteruploaded,
+//     });
+//   } else {
+//     const categories = new CategoryMaster({
+//       name: req.body.name,
+//       checked: req.body.checked,
+//       parent: req.body.parent,
+//       description: req.body.description,
+//       coverimg: req.file.filename,
+//     });
+//     const CategoryMasteruploaded = await categories.save();
+
+//     res.send({
+//       message: "Category created",
+//       categorymaster: CategoryMasteruploaded,
+//     });
+//   }
+// }
+//   }
+// );
+
+// categoryMasterRouter.get(
+//   '/categorymasterList',
+//   expressAsyncHandler(async (req, res) => {
+//     const categorymaster = await CategoryMaster.find();
+//     if (categorymaster) {
+//       res.send(categorymaster);
+//     } else {
+//       res.status(404).send({ message: 'Category Not Found' });
+//     }
+//   })
+// );
 
 categoryMasterRouter.post(
   "/",
   isAuth,
   upload.single("coverimg"),
   async (req, res) => {
-   
+    // console.log("req----------------------------", req);
     let categoryParent;
     if (req.body.parent != "home" && req.body.parent != "undefined") {
       categoryParent = await CategoryMaster.findById(req.body.parent);
@@ -731,14 +1223,56 @@ categoryMasterRouter.put(
         }
       );
     }
-    
+    // const categorymasterId = req.params.id;
+    // const categoryobj = await CategoryMaster.findById(req.body.pId);
+    // // console.log("categoryobj------>>", categoryobj);
+    // let test = await CategoryMaster.update(
+    //   { _id: "64afdb4bd388557f7374a595" },
+    //   {
+    //     $set: {
+    //       "children.0.children.0.name": req.body.name,
+    //       "children.0.children.0.checked": req.body.checked,
+    //       "children.0.children.0.description": req.body.description,
+    //       "children.0.children.0.parent": req.body.parent,
+    //     },
+    //   }
+    // );
+
+    //   const category = await CategoryMaster.update({
+    //     "_id" : ObjectId("5702e0c732faf57c7bb9ebe9"),
+    //     'projects._id': '1'
+    //   },
+    //   { $set: { 'projects.tasks.$.completed': newData }}
+    // )
+    // if (categoryobj) {
+    //   categoryobj.name = req.body.name;
+    //   categoryobj.checked = req.body.checked;
+    //   categoryobj.parent = req.body.parent;
+    //   categoryobj.description = req.body.description;
+    //   if (req.file === undefined) {
+    //     categoryobj.coverimg = categoryobj.coverimg;
+    //   } else {
+    //     categoryobj.coverimg = req.file.filename;
+    //   }
+    //   // categoryobj.fieldname=req.file.fieldname;
+    //   // categoryobj.originalname= req.file.originalname;
+    //   // categoryobj.path=req.file.path;
+    //   // categoryobj.filename= req.file.filename;
+    //   // categoryobj.mimetype= req.file.mimetype;
+    //   // categoryobj.filename= req.file.filename;
+    //   const updatecategoryobj = await categoryobj.save();
+    //   res.send({ message: "Category Updated", categoryobj: updatecategoryobj });
+    // } else {
+    //   res.status(404).send({ message: "Category Not Found" });
+    // }
   })
 );
 
 categoryMasterRouter.put(
   "/child/:id",
   isAuth,
- 
+  // isAdmin,
+  // isSeller,
   upload.single("coverimg"),
   expressAsyncHandler(
   async (req, res) => {
@@ -766,11 +1300,16 @@ categoryMasterRouter.put(
       childdId.checked = req.body.checked;
       childdId.parent = req.body.parent;
       childdId.description = req.body.description;
-      
+      // if (req.file === undefined) {
+      //   categoryChildObject.coverimg = categoryobj.coverimg;
+      // } else {
+      //   categoryChildObject.coverimg = req.file.filename;
+      // }
       const updateChildObj = await childdId.save();
       parenttt.children.push(updateChildObj);
       const updatedCategory = await parenttt.save();
-      
+      // console.log("categoryChildObject", updatedCategory);
+      //
       res.send({
         message: "category updated",
         categoryChildObject: updatedCategory,
@@ -784,10 +1323,11 @@ categoryMasterRouter.put(
 categoryMasterRouter.put(
   "/grandchild/:id",
   isAuth,
-  
+  // isAdmin,
+  // isSeller,
   upload.single("coverimg"),
   expressAsyncHandler(async (req, res) => {
-    
+    // console.log(req);
     const grandchildId = req.params.id;
     const childId = req.body.parent;
     let categoryGrandChildObject = await ThirdCategoryMaster.findById(
@@ -873,7 +1413,7 @@ categoryMasterRouter.get(
   "/categoryMasterList",
   expressAsyncHandler(async (req, res) => {
     const categorymaster = await CategoryMaster.find().sort({ createdAt: -1 });
-    
+    // console.log("req", categorymaster);
     if (categorymaster) {
       res.send(categorymaster);
     } else {
@@ -885,7 +1425,7 @@ categoryMasterRouter.get(
 categoryMasterRouter.get(
   "/ChildList",
   expressAsyncHandler(async (req, res) => {
-   
+    // console.log('req',req);
     const Childcategory = await subCategoryMaster.find();
     if (Childcategory) {
       res.send(Childcategory);
@@ -898,7 +1438,7 @@ categoryMasterRouter.get(
 categoryMasterRouter.get(
   "/categorySubChildList",
   expressAsyncHandler(async (req, res) => {
-    
+    // console.log('req',req);
     const Childcategory = await subCategoryMaster.find();
     if (Childcategory) {
       res.send(Childcategory);
@@ -1132,7 +1672,18 @@ categoryMasterRouter.delete(
 categoryMasterRouter.delete(
   "/Categorydelete/:id",
   expressAsyncHandler(async (req, res) => {
-   
+    console.log("req----------------delete", req.body);
+    // const categoryobj = await CategoryMaster.findById(req.body.parentId);
+    // console.log('categoryobj----------------delete', categoryobj);
+    // let deletechilddata;
+    // // let data;
+    // for (let i = 0; i < categoryobj.children.length; i++) {
+    //   const childdele = categoryobj.children[i];
+    //   // data.push(categoryobj.children[i])
+    //   deletechilddata = await childdele.remove();
+    // }
+    // console.log('deletechilddata----------------delete', deletechilddata);
+
     try {
       if (req.body.parent == "undefined") {
         let result = await CategoryMaster.findByIdAndUpdate({

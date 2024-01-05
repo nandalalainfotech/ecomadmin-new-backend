@@ -6,7 +6,7 @@ const seoRouter = express.Router();
 seoRouter.post(
   "/seo",
   expressAsyncHandler(async (req, res) => {
-  
+    // console.log('req', req);
     const SeoDetail = new seoModel({
       mprodId: req.body.mprodId,
       metaTitle: req.body.metaTitle,
@@ -34,7 +34,7 @@ seoRouter.get(
 seoRouter.put(
   "/updateseo/:id",
   expressAsyncHandler(async (req, res) => {
-  
+    // console.log('req', req);
     const Id = req.body._id;
     const prodSeoUpdate = await seoModel.findById(Id);
     if (prodSeoUpdate) {

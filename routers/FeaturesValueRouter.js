@@ -9,7 +9,7 @@ FeaturesValueRouter.get(
   "/Fvaluelist",
   expressAsyncHandler(async (req, res) => {
     const Featurelist = await FeaturesValue.find();
-   
+    // console.log('Featurelist',Featurelist);
     if (Featurelist) {
       res.send(Featurelist);
     } else {

@@ -6,7 +6,7 @@ const specificRouter = express.Router();
 specificRouter.post(
   "/specificPrice",
   expressAsyncHandler(async (req, res) => {
-    
+    // let newCom;
     let newComItem;
 
     const spePriceDetail = new specificModel({
@@ -44,7 +44,7 @@ specificRouter.post(
 specificRouter.get(
   "/gridList",
   expressAsyncHandler(async (req, res) => {
-    
+    // console.log('req', req);
     const details = await specificModel.find();
     if (details) {
       res.send(details);
@@ -57,7 +57,7 @@ specificRouter.get(
 specificRouter.get(
   "/specificList",
   expressAsyncHandler(async (req, res) => {
-    
+    // console.log('req', req);
     const pricedetails = await specificModel.find();
     if (pricedetails) {
       res.send(pricedetails);

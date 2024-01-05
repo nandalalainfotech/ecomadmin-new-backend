@@ -28,8 +28,35 @@ catProductRouter.get("/combinationchild", async (req, res) => {
 });
 
 catProductRouter.post("/", isAuth, async (req, res) => {
- 
+  // console.log("req-------------->>>", req);
+  // let featureId = [];
+  // let featurestypevalue = [];
 
+  // console.log("req.body.featureId=========>",req.body.featureId  )
+  // for (let i = 0; i < req.body.featureId.length;  i++) {
+  //   featureId.push(req.body.featureId[i].id);
+  // }
+  // console.log('req.body.featurestypevalue======>',req.body.featurestypevalue)
+  // for (let i = 0; i < req.body.featurestypevalue.length; i++) {
+  //   featurestypevalue.push(req.body.featurestypevalue[i].id);
+  // }
+
+  // let objects1 = req.body.qtyId;
+  // let select;
+  // const qtydata = await ProductQtyModel.findById({ _id: objects1[0] });
+  // qtydata.Qty = req.body.quantity
+  // select = await qtydata.save();
+
+  // console.log("select-------------->>>", select);
+
+  // let object2 = req.body.priceId;
+  // let select1;
+  // const pricedata = await prodPricingModel.findById({ _id: object2[0] });
+  // pricedata.RetailExcl = req.body.taxexcluded;
+  // pricedata.RetailIncl = req.body.taxincluded;
+  // pricedata.priceGroup = req.body.taxrule;
+  // select1 = await pricedata.save();
+  console.log("select1-------------->>>", req.body);
   const brand = new CatlogProduct({
     prodname: req.body.prodname,
     user: req.user._id,
@@ -60,7 +87,7 @@ catProductRouter.post("/", isAuth, async (req, res) => {
     depth: req.body.depth,
     weight: req.body.weight,
   });
- 
+  console.log("featurestypevalue========>", brand);
 
   const brandSaved = await brand.save();
   res.send({ message: "Product Created", product: brandSaved });
@@ -105,16 +132,19 @@ catProductRouter.get(
 catProductRouter.put(
   "/:id",
   isAuth,
-  
+  // isSeller,
+  // isAdmin,
+  // isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
-   
+    // console.log('req------------->>>>', req);
     let object1 = req.body.quanId;
     let select;
     const qtydata = await ProductQtyModel.findById({ _id: object1[0] });
     qtydata.Qty = req.body.quantity;
     select = await qtydata.save();
 
-   
+    // console.log('select------------->>>>', select);
+
     let object2 = req.body.priceId;
     let select1;
     const pricedata = await prodPricingModel.findById({ _id: object2[0] });
@@ -152,7 +182,8 @@ catProductRouter.put(
       catProdUpdate.taxexcluded = req.body.taxexcluded;
       catProdUpdate.taxincluded = req.body.taxincluded;
       const updatedCatProd = await catProdUpdate.save();
-     
+      // console.log('updatedCatProd-------->>>', updatedCatProd);
+
       res.send({
         message: "Catalog Product Updated",
         catProdUpdate: updatedCatProd,
@@ -305,7 +336,7 @@ catProductRouter.put(
       });
 
       if (catStockUpdate) {
-       
+        console.log("updatedCatStock---------->11111",catStockUpdate);
         catStockUpdate.comstock = catStockId[i].val;
         updatedCatStock = await catStockUpdate.save();
         

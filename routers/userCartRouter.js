@@ -19,11 +19,20 @@ UserCartRouter.get(
   })
 );
 
+// UserCartRouter.get("/cartId/:id",expressAsyncHandler(async (req, res) => {
+//     console.log("reqaaaaa============>>>>",req.params.id)
+//     const userId=req.params.id;
+//     const createdCartId = await UserCart.find({userId:userId});
+//     console.log("createdCartId",createdCartId)
+//     // const cartitems = await UserCart.find();
+//     res.send(createdCartId);
+//   })
+// );
 
 UserCartRouter.put(
   "/:id",
   expressAsyncHandler(async (req, res) => {
-
+    console.log("req", req);
     const productId = req.params.id;
     const cartupdate = await UserCart.findById(productId);
     if (cartupdate) {
@@ -53,7 +62,7 @@ UserCartRouter.post(
     const cartlist = await UserCart.find({
       productId: req.body.data._id,
     });
-    
+    // console.log("cartlist0",cartlist);
 
     if (cartlist.length === 0) {
       const createdCart = await cart.save();

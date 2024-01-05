@@ -8,49 +8,83 @@ import pdf from "dynamic-html-pdf";
 import nodemailer from "nodemailer";
 import path from "path";
 import RegisterModel from "../Models/RegisterModel.js";
+import twilio from "twilio"
+// const twilio = require("twilio");
 
 const GatewayRouter = express.Router();
+// require("dotenv").config();
 
+// const path = require('path');
+// GatewayRouter.post(
+//   "/sendmail/:id",
+//   expressAsyncHandler(async (req, res) => {
+//     // console.log(req);
+//     var transporter = nodemailer.createTransport({
+//       host: "smtp.gmail.com",
+//       port: 465,
+//       secure: true,
+//       service: "gmail",
+//       auth: {
+//         user: process.env.SENDER_EMAIL,
+//         pass: process.env.EMAIL_PASSWORD,
+//       },
+//     });
+//     var mailOptions = {
+//       from: process.env.SENDER_EMAIL,
+//       to: "umamaheswari@nandalalainfotech.com",
+//       subject: "Payment Success",
+//       text: "Your Payment was Successfull",
+//     };
+//     transporter.sendMail(mailOptions, function (error, info) {
+//       if (error) {
+//         console.log(error);
+//       } else {
+//         console.log("Email sent: " + info.response);
+//       }
+//     });
+//   })
+// );
 
 GatewayRouter.get(
-	"/get-razorpay-key",
-	expressAsyncHandler(async (req, res) => {
-		res.send({ key: process.env.RAZORPAY_KEY_ID });
-	})
+  "/get-razorpay-key",
+  expressAsyncHandler(async (req, res) => {
+    res.send({ key: process.env.RAZORPAY_KEY_ID });
+  })
 );
 
 GatewayRouter.post(
-	"/create-order",
-	expressAsyncHandler(async (req, res) => {
-		try {
-			const instance = new Razorpay({
-				key_id: process.env.RAZORPAY_KEY_ID,
-				key_secret: process.env.RAZORPAY_SECRET,
-			});
-			const options = {
-				amount: req.body.amount,
-				currency: "INR",
-			};
-			const order = await instance.orders.create(options);
-			if (!order) return res.status(500).send("Some error occured");
-			res.send(order);
-		} catch (error) {
-			res.status(500).send(error);
-		}
-	})
+  "/create-order",
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const instance = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_SECRET,
+      });
+      const options = {
+        amount: req.body.amount,
+        currency: "INR",
+      };
+      const order = await instance.orders.create(options);
+      if (!order) return res.status(500).send("Some error occured");
+      res.send(order);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  })
 );
 
 GatewayRouter.post(
 	"/pay-order",
 	expressAsyncHandler(async (req, res) => {
-	
+    
+		console.log("req----------->", req);
 		let usermail = req.body.email;
 		let username = req.body.CustomerName;
 		let order = req.body.order_id;
 		let date = req.body.Dateandtime.slice(10, 20);
-		
+		console.log("date--------->", date);
 		let time = req.body.Dateandtime.slice(22, 32);
-		
+		console.log("time--------->", time);
 		let cartItems = req.body.cartItems;
 		let Shopping = "Lala E-Commerce";
 		let paymentId = req.body.razorpayPaymentId;
@@ -68,8 +102,7 @@ GatewayRouter.post(
 		let cityName = customerAddress.cityName;
 		let statename = customerAddress.statename;
 		let countryName = customerAddress.countryName;
-		let zipcode = customerAddress.zipcode
-
+		let zipcode = customerAddress.zipcode;
 
 		const cusAddbill = await RegisterModel.findById(req.body.billing);
 		let fnameb = cusAddbill.fname;
@@ -78,7 +111,7 @@ GatewayRouter.post(
 		let cityNameb = cusAddbill.cityName;
 		let statenameb = cusAddbill.statename;
 		let countryNameb = cusAddbill.countryName;
-		let zipcodeb = cusAddbill.zipcode
+		let zipcodeb = cusAddbill.zipcode;
 		let cartdetails = req.body.cartItems;
 		let pdfData = [];
 		let dataUserMail = usermail;
@@ -88,7 +121,7 @@ GatewayRouter.post(
 		let dataCartItems = cartItems;
 		let dataPerUnit = dataCartItems.taxincluded;
 		let dataShopping = Shopping;
-		let dataShippingCharge = shippingCharge
+		let dataShippingCharge = shippingCharge;
 		let dataTotal = total;
 		let dataCarrier = carrier;
 		let dataCusFname = fnamed;
@@ -112,37 +145,69 @@ GatewayRouter.post(
 		let dataProductTotal = dataTotal - dataCartItems.ShippingCharges;
 
 		let productsItem = cartdetails.map((items) => {
+			items.AmountprodQtyValue = items.quantity * items.taxincluded;
 
-			items.AmountprodQtyValue = items.quantity * items.taxincluded
-
-			productdata.push(items)
+			productdata.push(items);
 		});
 
 		let totalamount = 0;
 		for (let i = 0; i < cartdetails.length; i++) {
-		
-			totalamount += cartdetails[i].AmountprodQtyValue
+			console.log("totalamount", cartdetails[i].AmountprodQtyValue);
+			totalamount += cartdetails[i].AmountprodQtyValue;
 		}
 
-	
+		console.log("totalamount", totalamount);
 		function toBase64(filePath) {
 			const img = fss.readFileSync(filePath);
 
-			return Buffer.from(img).toString('base64');
+			return Buffer.from(img).toString("base64");
 		}
 
-		const base64String = toBase64('./image/p11.jpg');
-		
-		const withPrefix = 'data:image/jpg;base64,' + base64String;
-		
+		const base64String = toBase64("./image/p11.jpg");
+		// console.log(base64String);
 
+		const withPrefix = "data:image/jpg;base64," + base64String;
+		// console.log(withPrefix);
 
 		pdfData.push({
-			dataUserMail, dataUserName, dataOrder, dataTime, dataCartItems, dataPerUnit, dataShopping, dataTotal, dataCarrier, dataPaymentMode, datamobile, dataShippingCharge,
-			dataCusFname, dataCusAddress1, dataCusAddress2, dataCusCityName, dataCusStatename, dataCusCountryName, dataCusZipcode, datapaymentid, cartItems, cartdetails,
-			totalamount, paymentId, paymentOrderId, dataBillFname, dataBillAddress1, dataBillAddress2, dataBillCityName, dataBillStatename, dataBillCountryName, dataBillZipcode,
-			productdata, dataProductTotal, withPrefix,date,time,
-		})
+			dataUserMail,
+			dataUserName,
+			dataOrder,
+			dataTime,
+			dataCartItems,
+			dataPerUnit,
+			dataShopping,
+			dataTotal,
+			dataCarrier,
+			dataPaymentMode,
+			datamobile,
+			dataShippingCharge,
+			dataCusFname,
+			dataCusAddress1,
+			dataCusAddress2,
+			dataCusCityName,
+			dataCusStatename,
+			dataCusCountryName,
+			dataCusZipcode,
+			datapaymentid,
+			cartItems,
+			cartdetails,
+			totalamount,
+			paymentId,
+			paymentOrderId,
+			dataBillFname,
+			dataBillAddress1,
+			dataBillAddress2,
+			dataBillCityName,
+			dataBillStatename,
+			dataBillCountryName,
+			dataBillZipcode,
+			productdata,
+			dataProductTotal,
+			withPrefix,
+			date,
+			time,
+		});
 		var html = fss.readFileSync(`pdf.html`, "utf8");
 		var options = {
 			format: "A4",
@@ -160,8 +225,7 @@ GatewayRouter.post(
 		};
 		if (pdfData?.length === 0) {
 			return null;
-		}
-		else {
+		} else {
 			await pdf
 				.create(document, options)
 				.then((pathRes) => {
@@ -176,7 +240,6 @@ GatewayRouter.post(
 					console.error(error);
 				});
 		}
-
 
 		try {
 			const {
@@ -210,10 +273,8 @@ GatewayRouter.post(
 				},
 			});
 
-
-
 			const __filename = path.resolve();
-			const htmlFile = path.join(__filename, 'test.html');
+			const htmlFile = path.join(__filename, "test.html");
 
 			var mailOptions = {
 				from: process.env.SENDER_EMAIL,
@@ -918,12 +979,12 @@ GatewayRouter.post(
 					{
 						__filename: "Invoice.pdf",
 						path: "./invoicepdf/Invoice.pdf",
-					}
-				]
+					},
+				],
 			};
 
 			transporter.sendMail(mailOptions, function (error, info) {
-			
+				// console.log("mailOptions", mailOptions);
 				if (error) {
 					console.log(error);
 				} else {
@@ -938,15 +999,28 @@ GatewayRouter.post(
 			console.log(error);
 			res.status(500).send(error);
 		}
-	})
+		const accountSid = process.env.TWILIO_ACCOUNT_SID;
+		const authToken = process.env.TWILIO_AUTH_TOKEN;
+		const phone = process.env.TWILIO_AUTH_PHONE
+		const client = twilio(accountSid, authToken);
+		console.log("accountSid", accountSid, authToken, phone);
+		client.messages
+			.create({
+				from: phone,
+				to: "+919944850325",
+				body: "Your order has been placed.",
+			})
+			.then((message) => console.log(message.sid))
+	        .catch((err) => {console.log(err)});
+  })
 );
 
 GatewayRouter.get(
-	"/list-orders",
-	expressAsyncHandler(async (req, res) => {
-		const orders = await GatewayModel.find();
-		res.send(orders);
-	})
+  "/list-orders",
+  expressAsyncHandler(async (req, res) => {
+    const orders = await GatewayModel.find();
+    res.send(orders);
+  })
 );
 
 export default GatewayRouter;
